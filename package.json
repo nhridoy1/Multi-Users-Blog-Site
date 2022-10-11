@@ -1,0 +1,36 @@
+{
+  "name": "my-web-blog",
+  "version": "1.0.0",
+  "engines": {
+    "node": "16.x.x"
+  },
+  "description": "A simple multi-users blog site.where people can write their story or whatever they want.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build:dev": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nur-Hossain-Ridoy/multi-users-blog-site.git"
+  },
+  "author": "NH Ridoy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nur-Hossain-Ridoy/multi-users-blog-site/issues"
+  },
+  "homepage": "https://github.com/Nur-Hossain-Ridoy/multi-users-blog-site#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "helmet": "^6.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.6.5",
+    "multer": "^1.4.5-lts.1",
+    "winston": "^3.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
+}
