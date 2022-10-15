@@ -45,12 +45,6 @@ const transports = [
     new winston.transports.File({
         level: 'error',
         filename: 'logger/error.log'
-    }),
-
-    // allow to print all the info level message inside the all.log file
-    new winston.transports.File({
-        level: 'http',
-        filename: 'logger/all.log'
     })
 ]
 

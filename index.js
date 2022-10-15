@@ -3,8 +3,6 @@ const app = require('./app')
 const connectDB = require('./config/db')
 const logger = require('./config/logger')
 
-
-
 // database connection
 connectDB()
 
