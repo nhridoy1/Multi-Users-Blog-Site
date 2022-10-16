@@ -2,7 +2,6 @@ require('dotenv').config()
 const express = require('express')
 const helmet = require('helmet')
 const morganMiddleware = require('./middleware/morgan')
-const fileUpload = require('express-fileupload')
 const app = express()
 
 
@@ -11,10 +10,6 @@ app.use(morganMiddleware)
 app.use(helmet())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
-app.use(fileUpload({
-    useTempFiles : true,
-    tempFileDir : '/tmp/'
-}));
 
 app.set('view engine', 'ejs')
 
