@@ -19,7 +19,7 @@ const userSchema = new Schema({
         trim: true,
         validate: {
             validator: function (email) {
-                return validator.isEmail()
+                return validator.isEmail(email)
             },
             message: () => 'Please provide a valid email'
         }
@@ -38,11 +38,11 @@ const userSchema = new Schema({
     password: {
         type: String,
         required: [true, 'Password must be provided'],
-        min: [8, 'Provide at least 8 character']
+        minLength: [8, 'Provide at least 8 character']
     },
     photo: {
-        id: String,
-        secure_url: String
+        type: String,
+        required: [true, 'Please provide photo url']
     },
     role: {
         type: String,
