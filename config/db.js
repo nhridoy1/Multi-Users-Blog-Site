@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
-
+const logger = require('./logger')
 
 const connectDB = () => {
    try {
         mongoose.connect(process.env.DB_CONNECT)
-        console.log('DB is connected')
+        logger.info('DB is Connected')
    } catch (err) {
-        
+        logger.error(err)
    }
 }
 

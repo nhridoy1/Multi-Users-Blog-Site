@@ -2,10 +2,14 @@ require('dotenv').config()
 const express = require('express')
 const helmet = require('helmet')
 const morganMiddleware = require('./middleware/morgan')
+const compression = require('compression')
+const cors = require('cors')
 const app = express()
 
 
 // all the middlewares
+app.use(compression())
+app.use(cors())
 app.use(morganMiddleware)
 app.use(helmet())
 app.use(express.json())

@@ -63,8 +63,8 @@ userSchema.pre('save', async function(next) {
 })
 
 // create jwt token
-userSchema.methods.getJwtToken = async function () {
-    return await jwt.sign({ id: this._id }, process.env.JWT_KEY, { algorithm: 'RS256', expiresIn: process.env.JWT_EXPIRY })
+userSchema.methods.getJwtToken = function () {
+    return jwt.sign({ id: this._id }, process.env.JWT_KEY, { algorithm: 'HS256', expiresIn: process.env.JWT_EXPIRY })
 }
 
 // verifing jwt token is valid or not
@@ -73,13 +73,21 @@ userSchema.methods.verifyJwtToken =  function (token) {
 }
 
 // comparing password with current password
-userSchema.methods.isPasswordValid = async function (givenPassword) {
-    return await bcryptjs.compare(givenPassword, this.password)
+userSchema.methods.isPasswordValid = function (givenPassword) {
+    return bcryptjs.compare(givenPassword, this.password)
 }
 
 // generate some string for forgot password ( as a token )
 userSchema.methods.generateResetToken = function () {
-    this.forgotpasswordtoken 
+    // generating a long token
+    const forgotToken = crypto.randomBytes(10).toString('hex')
+
+    this.forgotpasswordtoken = crypto.createHash('sha256').update(forgotToken).digest('hex')
+
+    // expiry of token
+    this.forgotpasswordexpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * process.env.FORTGOT_PASSWORD_EXPIRY)
+
+    return forgotToken
 }
 
 
