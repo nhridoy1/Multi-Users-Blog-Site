@@ -3,6 +3,12 @@ const {BigPromise} = require('../utils/bigPromise')
 const logger = require('../config/logger')
 const fileUpload = require('../config/firebase')
 const cookieToken = require('../utils/cookieTokne')
+const {
+    sendPasswordResetEmail,
+    sendAccountCreatedEmail,
+    sendPasswordResetSuccessfulEmail
+} = require('../email/mail-service')
+
 
 
 exports.signup = BigPromise( async (req, res, next) => {
@@ -25,6 +31,8 @@ exports.signup = BigPromise( async (req, res, next) => {
         photo: getUrl
     })
     
+    // sendAccountCreatedEmail(name, email)
+
     cookieToken(res, newUser, 201)
 })
 
@@ -34,13 +42,13 @@ exports.login = BigPromise(async (req, res, next) => {
     const user = await User.findOne({ email })
 
     if (!user) {
-        return res.status(400).json({ success: false, msg: 'Provide Correct Login Info'})
+        return res.status(400).json({ success: false, msg: 'Your email or password is invalid.'})
     }
 
     const isValid = await user.isPasswordValid(password)
 
     if (!isValid) {
-        return res.status(400).json({ success: false, msg: 'Provide Correct Login Info'})
+        return res.status(400).json({ success: false, msg: 'Your email or password is invalid.'})
     }
 
 
@@ -65,5 +73,8 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
     // construct the custom url
     const tokenURL = `${req.protocol}://${req.get('host')}/reset/password/${token}`
 
-    res.status(200).json({ success: true,tokenURL, message: 'Email sent successfully.Check your email'})
+    // sending email to user
+    sendPasswordResetEmail(tokenURL, process.env.SENDER_MAIL, process.env.SENDER_MAIL)
+
+    res.status(200).json({ success: true, message: 'Email has sent successfully.Please, check your email'})
 })
