@@ -1,0 +1,32 @@
+{
+  "name": "my-web-blog",
+  "version": "1.0.0",
+  "description": "In this repository,i will keep adding the production best pratice i should follow in a MERN.\u001b[D\u001b[3~ project.",
+  "main": "index.js",
+  "engines": {
+    "node": "16.13.x"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nur-Hossain-Ridoy/Multi-Users-Blog-Site.git"
+  },
+  "keywords": [
+    "react",
+    "nodejs",
+    "express",
+    "mongodb",
+    "mongoose",
+    "jest",
+    "mern-project",
+    "blog-site"
+  ],
+  "author": "NH Ridoy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Nur-Hossain-Ridoy/Multi-Users-Blog-Site/issues"
+  },
+  "homepage": "https://github.com/Nur-Hossain-Ridoy/Multi-Users-Blog-Site#readme"
+}
