@@ -9,3 +9,4 @@ nodemon.json
 
 # just to run some code testing purpose
 playground.js
+playground.test.js

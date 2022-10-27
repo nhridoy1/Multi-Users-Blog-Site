@@ -85,7 +85,7 @@ userSchema.methods.generateResetToken = function () {
     this.forgotpasswordtoken = crypto.createHash('sha256').update(forgotToken).digest('hex')
 
     // expiry of token
-    this.forgotpasswordexpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * process.env.FORTGOT_PASSWORD_EXPIRY)
+    this.forgotpasswordexpiry = new Date(Date.now() + 1000 * 60 * 60 * 24 * process.env.FORTGOT_PASSWORD_EXPIRY) // 3day
 
     return forgotToken
 }

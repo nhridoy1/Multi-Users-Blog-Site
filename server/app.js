@@ -4,6 +4,7 @@ const helmet = require('helmet')
 const morganMiddleware = require('./middleware/morgan')
 const compression = require('compression')
 const cors = require('cors')
+const cookieParser = require('cookie-parser')
 const app = express()
 
 
@@ -13,6 +14,7 @@ app.use(cors())
 app.use(morganMiddleware)
 app.use(helmet())
 app.use(express.json())
+app.use(cookieParser())
 app.use(express.urlencoded({ extended: true}))
 
 app.set('view engine', 'ejs')

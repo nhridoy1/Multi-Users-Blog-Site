@@ -1,8 +1,8 @@
 const User = require('../models/user')
 const {BigPromise} = require('../utils/bigPromise')
-const logger = require('../config/logger')
 const fileUpload = require('../config/firebase')
 const cookieToken = require('../utils/cookieTokne')
+const crypto = require('crypto')
 const {
     sendPasswordResetEmail,
     sendAccountCreatedEmail,
@@ -31,7 +31,7 @@ exports.signup = BigPromise( async (req, res, next) => {
         photo: getUrl
     })
     
-    // sendAccountCreatedEmail(name, email)
+    sendAccountCreatedEmail(name, email)
 
     cookieToken(res, newUser, 201)
 })
@@ -61,7 +61,7 @@ exports.logout = BigPromise(async (req, res, next) => {
         .json({success: true, msg: 'Successfully logout'})
 })
 
-exports.resetPassword = BigPromise(async (req, res, next) => {
+exports.forgotPassword = BigPromise(async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email })
 
     if (!user) {
@@ -70,6 +70,8 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
 
     const token = user.generateResetToken()
 
+    user.save({ validateBeforeSave: false })
+
     // construct the custom url
     const tokenURL = `${req.protocol}://${req.get('host')}/reset/password/${token}`
 
@@ -77,4 +79,39 @@ exports.resetPassword = BigPromise(async (req, res, next) => {
     sendPasswordResetEmail(tokenURL, process.env.SENDER_MAIL, process.env.SENDER_MAIL)
 
     res.status(200).json({ success: true, message: 'Email has sent successfully.Please, check your email'})
+})
+
+exports.resetPassword = BigPromise(async (req, res, next) => {
+    const {password, confirmPassword} = req.body
+
+    const token = req.params.token
+
+    const encryptedToken = await crypto.createHash('sha256').update(token).digest('hex')
+
+    const user = await User.findOne({ forgotpasswordtoken: encryptedToken, forgotpasswordexpiry: {$gt: Date.now()}})
+
+    if (!user) {
+        return res.status(400).json({success: false, msg: 'token is not valid'})
+    }
+
+    if (!(password === confirmPassword)) {
+        return res.status(400).json({success: false, msg: 'password and confirmpassword are not same.'})
+    } 
+
+    user.forgotpasswordexpiry = undefined
+    user.forgotpasswordtoken = undefined
+
+    user.save({ validateBeforeSave: false })
+
+    sendPasswordResetSuccessfulEmail(process.env.SENDER_MAIL, user.email)
+
+    res.status(200).json({success: true, msg: 'new password is set'})
+    
+})
+
+exports.changePassword = BigPromise(async (req, res, next) => {
+    const {} = req.body
+
+
+    res.status(200).json({ success: true, msg: "password updated successfully"})
 })
